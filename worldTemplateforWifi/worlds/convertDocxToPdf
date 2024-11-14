@@ -1,0 +1,38 @@
+import os
+import comtypes.client
+import time
+
+def convert_docx_to_pdf(docx_path, pdf_path):
+    try:
+        # Initialize the COM interface with Word
+        word = comtypes.client.CreateObject('Word.Application')
+        word.Visible = False  # Make Word invisible while converting
+        doc = word.Documents.Open(docx_path)
+        
+        # Save the document as PDF (FileFormat=17 is for PDF)
+        doc.SaveAs(pdf_path, FileFormat=17)
+        doc.Close()
+        word.Quit()
+
+        print(f'Successfully converted {docx_path} to PDF.')
+
+    except Exception as e:
+        print(f'Error converting {docx_path}: {e}')
+
+def convert_all_docx_in_directory(directory_path):
+    # List all files in the directory
+    for filename in os.listdir(directory_path):
+        if filename.endswith('.docx'):  # Only process .docx files
+            docx_file = os.path.join(directory_path, filename)
+            pdf_file = os.path.join(directory_path, filename.replace('.docx', '.pdf'))
+            convert_docx_to_pdf(docx_file, pdf_file)
+
+# Specify the directory where the DOCX files are located
+directory = r'C:\Users\intra\Desktop\vscode_workspace\pythonDemos\worldTemplateforWifi\worlds'  # Replace with your directory path
+
+# Ensure the directory exists
+if not os.path.exists(directory):
+    print(f"Directory {directory} does not exist.")
+else:
+    convert_all_docx_in_directory(directory)
+    print('Batch conversion completed.')
