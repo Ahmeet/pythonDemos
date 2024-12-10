@@ -3,14 +3,15 @@ class Node:
     def __init__(self, value) -> None:
         self.value = value
         self.next = None
+        self.previous = None
 
 
 class LinkedList:
     
     def __init__(self) -> None:
         self.head = None
-        
-    # O(n) - linear time
+        self.tail = None
+
     def __repr__(self) -> str:
         if self.head is None:
             return "[]"
@@ -124,23 +125,4 @@ class LinkedList:
             return last.value
 
 if __name__ == "__main__":
-    ll = LinkedList()
-    
-    ll.append(10)
-    ll.append(5)
-    ll.append(18)
-    ll.append(22)
-    ll.append(29)
-    
-    ll.prepend(100)
-    
-    ll.insert(200,1)
-    
-    ll.delete(18)
-    
-    ll.pop(1)
-    
-    print(ll)
-    print(ll.get(1))
-    print(29 in ll)
-    print(800 in ll)
+    pass
