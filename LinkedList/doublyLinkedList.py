@@ -6,7 +6,7 @@ class Node:
         self.previous = None
 
 
-class LinkedList:
+class DoublyLinkedList:
     
     def __init__(self) -> None:
         self.head = None
@@ -18,7 +18,7 @@ class LinkedList:
         else:
             last = self.head
             
-            returnString = f"{last.value}"
+            returnString = f"[{last.value}"
             
             while last.next:
                 last = last.next
@@ -45,21 +45,27 @@ class LinkedList:
             last = last.next
         return counter
 
-    # O(n) - linear time
+    # O(1) - constant time
     def append(self, value):
         if self.head is None:
             self.head = Node(value)
+            self.tail = self.head
         else:
-            last = self.head
-            while last.next:
-                last = last.next
-            last.next = Node(value)
+            lastNode = Node(value)
+            lastNode.previous = self.tail
+            self.tail.next = lastNode
+            self.tail = lastNode
 
     # O(1) - constant time
     def prepend(self,value):
-        firstNode = Node(value)
-        firstNode.next = self.head
-        self.head = firstNode
+        if self.head is None:
+            self.head = Node(value)
+            self.tail = Node(value)
+        else:
+            firstNode = Node(value)
+            firstNode.next = self.head
+            self.head.previous = firstNode
+            self.head = firstNode
 
     # O(n) - linear time
     def insert(self, value, index):
@@ -78,6 +84,9 @@ class LinkedList:
                 
                 newNode = Node(value)
                 newNode.next = last.next
+                newNode.previous = last
+                if last.next is not None:
+                    last.next.previous = newNode
                 last.next = newNode
     
     # O(n) - linear time
@@ -91,6 +100,8 @@ class LinkedList:
             else:
                 while last.next:
                     if last.next.value == value:
+                        if last.next.next is not None:
+                            last.next.next.previous = last
                         last.next = last.next.next
                         break
                     last = last.next
@@ -99,18 +110,24 @@ class LinkedList:
     def pop(self, index):
         if self.head is None:
             raise ValueError("Index out of bounds")
+
         else:
             last = self.head
-            
-            for i in range(index-1):
+            if index == 0:
+                last.next.previous = None
+                self.head = last.next
+            else:
+                for i in range(index-1):
+                    if last.next is None:
+                        raise ValueError("Index out of bounds")
+                    last = last.next
+                
                 if last.next is None:
                     raise ValueError("Index out of bounds")
-                last = last.next
-            
-            if last.next is None:
-                raise ValueError("Index out of bounds")
-            else:
-                last.next = last.next.next
+                else:
+                    if last.next.next is not None:
+                        last.next.next.previous = last
+                    last.next = last.next.next
                 
     # O(n) - linear time
     def get(self, index):
@@ -125,4 +142,31 @@ class LinkedList:
             return last.value
 
 if __name__ == "__main__":
-    pass
+    dll = DoublyLinkedList()
+
+    dll.append(10)
+
+    dll.insert(5, 1)
+    dll.insert(20, 1)
+    dll.insert(18, 1)
+    dll.insert(22, 1)
+    dll.insert(88, 1)
+    dll.insert(97, 1)
+
+    dll.prepend(100)
+
+    dll.insert(200, 1)
+
+    dll.delete(18)
+    dll.delete(22)
+    dll.delete(5)
+
+    dll.pop(1)
+    dll.pop(0)
+
+    print(dll)
+
+    print(dll.get(1))
+
+    print(29 in dll)
+    print(800 in dll)

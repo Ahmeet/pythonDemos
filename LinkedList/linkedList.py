@@ -17,7 +17,7 @@ class LinkedList:
         else:
             last = self.head
             
-            returnString = f"{last.value}"
+            returnString = f"[{last.value}"
             
             while last.next:
                 last = last.next
@@ -100,16 +100,18 @@ class LinkedList:
             raise ValueError("Index out of bounds")
         else:
             last = self.head
-            
-            for i in range(index-1):
+            if index == 0:
+                self.head = last.next
+            else:
+                for i in range(index-1):
+                    if last.next is None:
+                        raise ValueError("Index out of bounds")
+                    last = last.next
+
                 if last.next is None:
                     raise ValueError("Index out of bounds")
-                last = last.next
-            
-            if last.next is None:
-                raise ValueError("Index out of bounds")
-            else:
-                last.next = last.next.next
+                else:
+                    last.next = last.next.next
                 
     # O(n) - linear time
     def get(self, index):
@@ -139,6 +141,7 @@ if __name__ == "__main__":
     ll.delete(18)
     
     ll.pop(1)
+    ll.pop(0)
     
     print(ll)
     print(ll.get(1))
