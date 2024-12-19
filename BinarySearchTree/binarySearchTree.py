@@ -81,7 +81,7 @@ class BinarySearchTree:
                 else:
                     currentNode = currentNode.right
 
-    # O(n) worst case, O(log n) average case, O(h) always -hegiht
+    # O(n) worst case, O(log n) average case, O(h) always -h is hegiht
     def delete (self, key):
         node = self.search(key)
 
